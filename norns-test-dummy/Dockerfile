@@ -7,8 +7,8 @@ ENV \
     #NORNS_REPO=https://github.com/monome/norns.git \
     MAIDEN_TAG=1daf030c2c81b8d8fadadda22e1de5d1ec1381f1 \
     MAIDEN_REPO=https://github.com/monome/maiden.git \
-    NORNS_TAG=will/docker-test \
-    NORNS_REPO=https://github.com/winder/norns.git
+    NORNS_TAG=740cbeed0fd4890f420d9fbc8691ccefbe73b5e4 \
+    NORNS_REPO=https://github.com/monome/norns.git
 
 RUN groupadd we -g 1000 && \
     useradd we -g 1000 -u 1000 -m -s /bin/bash

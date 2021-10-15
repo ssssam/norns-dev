@@ -14,6 +14,8 @@ run:
 		-p 5900:5900 \
 		-p 8889:8889 \
 		-p 10111:10111/udp \
+		-v ${PWD}/jackdrc:/etc/jackdrc \
+		-v ${PWD}/matronrc.lua:/home/we/norns/matronrc.lua \
 		--name norns-test-dummy \
 		samdoshi/norns-test-dummy
 
@@ -31,6 +33,7 @@ run-audio:
 		-p 8889:8889 \
 		-p 10111:10111/udp \
 		--name norns-test-dummy \
+		-v ${PWD}/matronrc.lua:/home/we/norns/matronrc.lua \
 		-v /tmp/jackdrc:/etc/jackdrc \
 		samdoshi/norns-test-dummy
 
