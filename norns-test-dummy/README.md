@@ -35,6 +35,26 @@ Please view the `Makefile` to see the exact options given to the `docker` comman
  - **`shell`**: starts a shell in an _already running_ Docker process, it is useful with the `run` target.
  - **`shell-root`**: as `shell` but starts as `root`.
 
+## Getting video output
+
+The onboard OLED screen is served by VNC, and also by a simple screenshot server.
+
+For the simplest screen display, visit http://127.0.0.1:8889 to see a screenshot.
+
+For a more advanced display connect to the VNC to port 5900. On linux `gvncviewer` is a simple client with scaling support.
+
+## Using OSC
+
+To remote control norns OSC can be used by sending messages to port 10111
+
+The following control the encoders and buttons:
+* /remote/enc/1 (amount)
+* /remote/enc/2 (amount)
+* /remote/enc/3 (amount)
+* /remote/key/1 (0|1)
+* /remote/key/2 (0|1)
+* /remote/key/3 (0|1)
+
 ## Getting sound output on Linux with ALSA pass-through
 
 You can also use this image to produce audio on Linux, as it's running in a container and not a virtual machine, performance should be nearly identical to running it on the host OS. However we will need to dedicate a sound card to the image (i.e. it cannot be in use by either Jack or PulseAudio).
