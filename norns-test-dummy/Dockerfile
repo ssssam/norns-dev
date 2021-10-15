@@ -72,6 +72,7 @@ RUN /home/we/maiden/project-setup.sh && \
     git clone https://github.com/JakeCarter/circles.git
 
 COPY ["jackdrc", "/etc/jackdrc"]
+COPY ["matronrc.lua", "/home/we/norns/matronrc.lua"]
 COPY ["norns.yaml", "/home/we/.tmuxp/norns.yaml"]
 COPY ["tmux.conf", "/home/we/.tmux.conf"]
 COPY ["oled-server.go", "/home/we/oled-server.go"]
