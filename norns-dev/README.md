@@ -1,14 +1,14 @@
-# `samdoshi/norns-dev`
+# `wwinder/norns-dev`
 
 ## About this Docker image
 
 This Docker image contains both the build-time and run-time dependencies for [`matron`][matron] and [`maiden`][maiden]
 
-Please visit [github.com/samdoshi/norns-dev][norns-dev] for information on how to use this image to set up a build environment customised to your requirements.
+Please visit [github.com/wwinder/norns-dev][norns-dev] for information on how to use this image to set up a build environment customised to your requirements.
 
 [matron]: https://github.com/monome/norns
 [maiden]: https://github.com/monome/maiden
-[norns-dev]: https://github.com/samdoshi/norns-dev
+[norns-dev]: https://github.com/wwinder/norns-dev
 
 The image makes available:
 
@@ -36,7 +36,7 @@ Please see `install.sh` and `install-lib.sh` to see exactly what is installed.
 
 ## Summary of `Makefile` targets
 
- - **`build`**: builds the Docker image and tags it as `samdoshi/norns-dev`.
+ - **`build`**: builds the Docker image and tags it as `wwinder/norns-dev`.
  - **`run`**: runs the image with increased `/dev/shm` size and a higher `rtprio` so that `jackd` works, and then drops you at a `bash` prompt.
 
 ## Tips and tricks

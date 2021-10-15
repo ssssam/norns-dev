@@ -14,12 +14,12 @@ Run the following (it is not necessary to have cloned this repo):
 docker run --rm -it \
     --ulimit rtprio=95 --ulimit memlock=-1 --shm-size=256m \
     -p 5000:5000 -p 5555:5555 -p 5556:5556 \
-    samdoshi/norns-test-dummy
+    wwinder/norns-test-dummy
 ```
 
 Then visit http://127.0.0.1:5000/maiden/ in your browser.
 
-The above command will pull a copy of `samdoshi/norns-test-dummy` from [Docker Hub](https://hub.docker.com/r/samdoshi/norns-test-dummy/) if it doesn't exist locally. See below for details to build it yourself.
+The above command will pull a copy of `wwinder/norns-test-dummy` from [Docker Hub](https://hub.docker.com/r/wwinder/norns-test-dummy/) if it doesn't exist locally. See below for details to build it yourself.
 
 **Type `Ctrl-b d` to quit [`tmux`][] and the Docker session.**
 
@@ -27,7 +27,7 @@ The above command will pull a copy of `samdoshi/norns-test-dummy` from [Docker H
 
 Please view the `Makefile` to see the exact options given to the `docker` commands.
 
- - **`build`**: builds the Docker image and tags it as `samdoshi/norns-test-dummy`.
+ - **`build`**: builds the Docker image and tags it as `wwinder/norns-test-dummy`.
  - **`run`**: runs the image leaving you in a [`tmux`][] session with `jackd`, `crone`, `matron` and `maiden` running in individual panes.
  - **`run-audio`**: same as `run` but with audio exported. Tested on Linux, your mileage may vary.
  - **`run-bash`**: runs the image but doesn't start the [`tmux`][] session.
@@ -95,7 +95,7 @@ docker run --rm -it \
     -p 5556:5556 \
     -v /tmp/jackdrc:/etc/jackdrc \
     --name norns \
-    samdoshi/norns-test-dummy
+    wwinder/norns-test-dummy
 ```
 
 (We use the `$(getent...)` as we need to use the `gid` of the group from the host)
@@ -148,7 +148,7 @@ docker run --rm -it \
     -p 5556:5556 \
     -v /tmp/jackdrc:/etc/jackdrc \
     --name norns \
-    samdoshi/norns-test-dummy
+    wwinder/norns-test-dummy
 ```
 
 I recommend running the `tehn/earthsea.lua` script to test the grid functionality.

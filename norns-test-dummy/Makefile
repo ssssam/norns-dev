@@ -1,7 +1,7 @@
 .phony: build run run-bash run-bash-root shell shell-root
 
 build:
-	docker build -t samdoshi/norns-test-dummy .
+	docker build -t wwinder/norns-test-dummy .
 
 run:
 	docker run --rm -it \
@@ -17,7 +17,7 @@ run:
 		-v ${PWD}/jackdrc:/etc/jackdrc \
 		-v ${PWD}/matronrc.lua:/home/we/norns/matronrc.lua \
 		--name norns-test-dummy \
-		samdoshi/norns-test-dummy
+		wwinder/norns-test-dummy
 
 run-audio:
 	docker run --rm -it \
@@ -35,7 +35,7 @@ run-audio:
 		--name norns-test-dummy \
 		-v ${PWD}/matronrc.lua:/home/we/norns/matronrc.lua \
 		-v /tmp/jackdrc:/etc/jackdrc \
-		samdoshi/norns-test-dummy
+		wwinder/norns-test-dummy
 
 run-bash:
 	docker run --rm -it \
@@ -46,7 +46,7 @@ run-bash:
 		-p 5555:5555 \
 		-p 5556:5556 \
 		--name norns-test-dummy \
-		samdoshi/norns-test-dummy \
+		wwinder/norns-test-dummy \
 		bash
 
 run-bash-root:
@@ -59,7 +59,7 @@ run-bash-root:
 		-p 5555:5555 \
 		-p 5556:5556 \
 		--name norns-test-dummy \
-		samdoshi/norns-test-dummy \
+		wwinder/norns-test-dummy \
 		bash
 
 shell:

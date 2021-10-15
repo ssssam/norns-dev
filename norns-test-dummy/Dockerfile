@@ -1,10 +1,7 @@
-FROM samdoshi/norns-dev:latest
+FROM wwinder/norns-dev:latest
 
-# Using commit hashes instead of releases because there are
-# unreleased fixes required for things to run in docker.
+# Tag can be a commit hashes or branch name.
 ENV \
-    #NORNS_TAG=c52a6bb52931444880c4aea132602cae8f506728 \
-    #NORNS_REPO=https://github.com/monome/norns.git \
     MAIDEN_TAG=1daf030c2c81b8d8fadadda22e1de5d1ec1381f1 \
     MAIDEN_REPO=https://github.com/monome/maiden.git \
     NORNS_TAG=740cbeed0fd4890f420d9fbc8691ccefbe73b5e4 \
@@ -43,7 +40,7 @@ RUN git clone $MAIDEN_REPO maiden_src && \
     tar -xvf dist/maiden.tgz -C /home/we && \
     /home/we/maiden/project-setup.sh
 
-# MATRON (Norns)
+# MATRON - build with desktop mode enabled.
 RUN git clone $NORNS_REPO && \
     cd /home/we/norns && \
     git checkout $NORNS_TAG && \
@@ -51,13 +48,13 @@ RUN git clone $NORNS_REPO && \
     ./waf configure --desktop && \
     ./waf
 
-# Install SuperCollider extensions
+# Supercollider - Install extensions.
 RUN mkdir -p /home/we/.local/share/SuperCollider/Extensions/norns && \
     cd /home/we/norns/sc && \
     ./install.sh && \
     echo | sclang
 
-# DUST - maiden data directory.
+# DUST - Configure maiden data directory.
 RUN /home/we/maiden/project-setup.sh && \
     mkdir -p dust/code && \
     cd dust/code && \
