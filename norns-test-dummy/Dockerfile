@@ -1,8 +1,14 @@
 FROM samdoshi/norns-dev:latest
 
-ENV NORNS_TAG=v1.0.3 \
-    MAIDEN_TAG=v0.9.3 \
-    DUST_TAG=9a28abbd1abc8520337e8858d882bf8eebb01463
+# Using commit hashes instead of releases because there are
+# unreleased fixes required for things to run in docker.
+ENV \
+    #NORNS_TAG=c52a6bb52931444880c4aea132602cae8f506728 \
+    #NORNS_REPO=https://github.com/monome/norns.git \
+    MAIDEN_TAG=1daf030c2c81b8d8fadadda22e1de5d1ec1381f1 \
+    MAIDEN_REPO=https://github.com/monome/maiden.git \
+    NORNS_TAG=will/docker-test \
+    NORNS_REPO=https://github.com/winder/norns.git
 
 RUN groupadd we -g 1000 && \
     useradd we -g 1000 -u 1000 -m -s /bin/bash
@@ -12,7 +18,16 @@ RUN apt-get update -q && \
             python3-pip \
             python3-setuptools \
             python3-wheel \
-            tmux && \
+            tmux \
+            vim \
+            libboost-dev \
+            # oled display
+            libsdl2-dev \
+            x11vnc \
+            xvfb \
+            # display server
+            x11-apps \
+            imagemagick && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip3 install tmuxp==1.4.0
@@ -20,30 +35,48 @@ RUN apt-get update -q && \
 USER we
 WORKDIR /home/we
 
-RUN go get -d github.com/monome/maiden && \
-    cd /home/we/go/src/github.com/monome/maiden && \
+# MAIDEN - build release then install it.
+RUN git clone $MAIDEN_REPO maiden_src && \
+    cd maiden_src && \
     git checkout $MAIDEN_TAG && \
-    glide install && \
-    go build
+    make release-local && \
+    tar -xvf dist/maiden.tgz -C /home/we && \
+    /home/we/maiden/project-setup.sh
 
-RUN cd /home/we/go/src/github.com/monome/maiden/app && \
-    yarn install && \
-    yarn build
+# MATRON (Norns)
+RUN git clone $NORNS_REPO && \
+    cd /home/we/norns && \
+    git checkout $NORNS_TAG && \
+    git submodule update --init --recursive && \
+    ./waf configure --desktop && \
+    ./waf
 
+# Install SuperCollider extensions
 RUN mkdir -p /home/we/.local/share/SuperCollider/Extensions/norns && \
-    git clone --branch=$NORNS_TAG --depth=1 https://github.com/monome/norns.git && \
-    git clone https://github.com/monome/dust.git && \
-    cd /home/we/dust && \
-    git checkout $DUST_TAG
+    cd /home/we/norns/sc && \
+    ./install.sh && \
+    echo | sclang
 
-RUN cd /home/we/norns && \
-    ./waf configure && \
-    ./waf && \
-    cd sc && \
-    ./install.sh
+# DUST - maiden data directory.
+RUN /home/we/maiden/project-setup.sh && \
+    mkdir -p dust/code && \
+    cd dust/code && \
+    # TODO: More scripts - which ones??
+    git clone https://github.com/tehn/awake.git && \
+    git clone https://github.com/p3r7/3d.git && \
+    git clone https://github.com/northern-information/dronecaster.git && \
+    git clone https://github.com/justmat/showers.git && \
+    git clone https://github.com/distropolis/pixels.git && \
+    git clone https://github.com/ambalek/raindrops.git && \
+    git clone https://github.com/tomwaters/spirals.git && \
+    git clone https://github.com/tomwaters/breakthrough.git && \
+    git clone https://github.com/jaseknighter/flora.git && \
+    git clone https://github.com/synthetiv/euclidigons.git && \
+    git clone https://github.com/JakeCarter/circles.git
 
 COPY ["jackdrc", "/etc/jackdrc"]
 COPY ["norns.yaml", "/home/we/.tmuxp/norns.yaml"]
 COPY ["tmux.conf", "/home/we/.tmux.conf"]
+COPY ["oled-server.go", "/home/we/oled-server.go"]
 
 CMD tmuxp load norns
